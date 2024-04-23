@@ -26,3 +26,21 @@ def visualize_top_handsets(top_5_handset_per_manufacturer, choosen_manufacturer)
     plt.xticks(rotation=45, ha='right')
 
 
+class Preprocess:
+
+    def __init__(self, df):
+        self.df = df.copy()
+
+
+    def drop_columns_with_null(self, threshold = 0.3):
+        null_info = self.df.isnull().sum() / len(self.df)
+
+        drop_columns = null_info[null_info > threshold].index
+
+        self.df.drop(columns = drop_columns, inplace = True)
+
+        return self.df
+    
+    def convert_to_datetime(self, column):
+
+        self.df[column] = self.df[column].apply(pd.to_datetime)
