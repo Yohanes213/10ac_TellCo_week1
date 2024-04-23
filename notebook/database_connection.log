@@ -1,0 +1,17 @@
+2024-04-23 12:16:57,391 src.database_connection INFO Database connection established successfully
+2024-04-23 12:17:07,251 src.database_connection INFO SQL query executed successfully: SELECT * FROM xdr_data
+2024-04-23 12:26:05,847 src.database_connection INFO Database connection established successfully
+2024-04-23 12:26:35,158 src.database_connection INFO SQL query executed successfully: SELECT * FROM xdr_data
+2024-04-23 12:35:19,397 src.database_connection INFO Database connection established successfully
+2024-04-23 12:35:27,021 src.database_connection INFO SQL query executed successfully: SELECT * FROM xdr_data
+2024-04-23 13:01:12,054 src.database_connection INFO Database connection established successfully
+2024-04-23 13:02:11,343 src.database_connection INFO Database connection established successfully
+2024-04-23 13:02:23,388 src.database_connection INFO SQL query executed successfully: SELECT * FROM xdr_data
+2024-04-23 15:43:50,472 src.database_connection INFO Database connection established successfully
+2024-04-23 15:44:03,350 src.database_connection INFO SQL query executed successfully: SELECT * FROM xdr_data
+2024-04-23 16:58:14,794 src.database_connection INFO Database connection established successfully
+2024-04-23 16:58:28,465 src.database_connection INFO SQL query executed successfully: SELECT * FROM xdr_data
+2024-04-23 17:55:53,272 src.database_connection INFO Database connection established successfully
+2024-04-23 17:56:10,551 src.database_connection INFO SQL query executed successfully: SELECT * FROM xdr_data
+2024-04-23 18:34:50,499 src.database_connection INFO Database connection established successfully
+2024-04-23 18:34:59,270 src.database_connection INFO SQL query executed successfully: SELECT * FROM xdr_data
