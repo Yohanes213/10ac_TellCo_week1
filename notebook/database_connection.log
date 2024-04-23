@@ -1,8 +1,0 @@
-2024-04-23 10:54:44,582 src.database_connection INFO Database connection established successfully
-2024-04-23 10:55:00,933 src.database_connection INFO SQL query executed successfully: SELECT * FROM xdr_data
-2024-04-23 11:06:12,563 src.database_connection INFO Database connection established successfully
-2024-04-23 11:06:21,922 src.database_connection INFO SQL query executed successfully: SELECT * FROM xdr_data
-2024-04-23 11:09:33,632 src.database_connection INFO Database connection established successfully
-2024-04-23 11:09:41,412 src.database_connection INFO SQL query executed successfully: SELECT * FROM xdr_data
-2024-04-23 11:10:21,407 src.database_connection INFO Database connection established successfully
-2024-04-23 11:10:28,024 src.database_connection INFO SQL query executed successfully: SELECT * FROM xdr_data
