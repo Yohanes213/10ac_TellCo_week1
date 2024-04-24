@@ -38,22 +38,25 @@ class VisualizationUtils:
         except Exception as e:
             self.logger.error(f"Error occurred while plotting bar chart: {e}")
 
-    def plot_hist(self, df, column):
+    def plot_hist(self, df, column, ax= None):
         """
         Plot a histogram.
 
         Parameters:
             df (pandas DataFrame): DataFrame containing the data.
             column (str): Name of the column for which histogram is plotted.
+            ax (matplotlib Axes, optional): The Axes object to plot on. If None, create a new figure and axis.
         """
         try:
-            plt.figure(figsize=(10, 6))
+            if ax is None:
+                fig, ax = plt.subplots()
             df[column] = pd.to_numeric(df[column])
             df[column].hist(bins=10, edgecolor='black')
-            plt.title(f"Histogram of {column}")
-            plt.xlabel(column)
-            plt.ylabel("Count")
-            plt.show()
+            ax.set_title(f"Histogram of {column}")
+            ax.set_xlabel(column)
+            ax.set_ylabel("Count")
+            if ax is None:
+                plt.show()
             self.logger.info(f"Histogram plot created for '{column}'")
         except ValueError:
             self.logger.warning(f"Column '{column}' is not numerical. Histogram cannot be created")
