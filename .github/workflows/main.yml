@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install linters
+        run: |
+          pip install flake8 black isort
+      - name: Run linting
+        run: |
+          flake8 .
+          black --check .
+          isort .
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python environment
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'  # Or a specific version you require
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run notebook tests (optional)
+        run: |
+          if [ -f tests/test_notebook.py ]; then
+            pytest tests/test_notebook.py
+          fi
+      - name: Run unit tests (optional)
+        run: |
+          if [ -d tests ]; then
+            pytest tests
+          fi
