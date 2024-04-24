@@ -35,7 +35,7 @@ class PreprocessingUtils:
         self.logger.info(f"Dropped columns with high null values: {drop_columns}")
         return df.drop(columns=drop_columns)
 
-    def convert_to_datetime(self, df, column):
+    def convert_to_datetime(self, df, columns):
         """
         Convert a column to datetime format.
 
@@ -46,8 +46,9 @@ class PreprocessingUtils:
         Returns:
             pandas DataFrame: DataFrame with column converted to datetime.
         """
-        df[column] = pd.to_datetime(df[column])
-        self.logger.info(f"Converted column '{column}' to datetime format")
+        for column in columns:
+            df[column] = pd.to_datetime(df[column])
+            self.logger.info(f"Converted column '{column}' to datetime format")
         return df
 
     def convert_to_float_to_int_if_possible(self, df):
