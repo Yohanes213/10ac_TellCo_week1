@@ -21,14 +21,6 @@ class PreprocessingUtils:
     def drop_columns_with_null(self, df, threshold=0.3):
         """
         Drop columns with a high percentage of missing values.
-
-        Parameters:
-            df (pandas DataFrame): Input DataFrame.
-            threshold (float, optional): Threshold for dropping columns based on missing value percentage.
-                Defaults to 0.3.
-
-        Returns:
-            pandas DataFrame: DataFrame with columns dropped.
         """
         null_info = df.isnull().sum() / len(df)
         drop_columns = null_info[null_info > threshold].index
@@ -38,13 +30,6 @@ class PreprocessingUtils:
     def convert_to_datetime(self, df, columns):
         """
         Convert a column to datetime format.
-
-        Parameters:
-            df (pandas DataFrame): Input DataFrame.
-            column (str): Name of the column to convert.
-
-        Returns:
-            pandas DataFrame: DataFrame with column converted to datetime.
         """
         for column in columns:
             df[column] = pd.to_datetime(df[column])
@@ -54,12 +39,6 @@ class PreprocessingUtils:
     def convert_to_float_to_int_if_possible(self, df):
         """
         Convert float columns to int if possible.
-
-        Parameters:
-            df (pandas DataFrame): Input DataFrame.
-
-        Returns:
-            pandas DataFrame: DataFrame with float columns converted to int if possible.
         """
         for column in df.select_dtypes(include='float'):
             if df[column].equals(df[column].round()):
@@ -70,14 +49,6 @@ class PreprocessingUtils:
     def remove_outliers(self, df, column, num_std=3):
         """
         Remove outliers from a column based on the specified number of standard deviations from the mean.
-
-        Parameters:
-            df (pandas DataFrame): Input DataFrame.
-            column (str): Name of the column to remove outliers from.
-            num_std (int, optional): Number of standard deviations from the mean to consider as outlier. Defaults to 3.
-
-        Returns:
-            pandas DataFrame: DataFrame with outliers removed.
         """
         mean = df[column].mean()
         std = df[column].std()
@@ -91,13 +62,6 @@ class PreprocessingUtils:
     def encode_categorical_data(self, df, categorical_columns=None):
         """
         Encode categorical columns using LabelEncoder.
-
-        Parameters:
-            df (pandas DataFrame): Input DataFrame.
-            categorical_columns (list of str): The names of the categorical columns. If None, all object-type columns will be considered categorical.
-
-        Returns:
-            pandas DataFrame: DataFrame with encoded categorical columns.
         """
         if categorical_columns is None:
             categorical_columns = df.select_dtypes(include=['object']).columns.tolist()
@@ -111,12 +75,6 @@ class PreprocessingUtils:
     def scale_data(self, df):
         """
         Scale the entire DataFrame using Min-Max scaling.
-
-        Parameters:
-            df (pandas DataFrame): Input DataFrame.
-
-        Returns:
-            pandas DataFrame: DataFrame with scaled data.
         """
         scaler = MinMaxScaler()
         scaled_data = scaler.fit_transform(df)
@@ -127,14 +85,6 @@ class PreprocessingUtils:
     def impute_nulls(self, df, strategy="mean"):
         """
         Imputes null values in all columns of the DataFrame using a specified strategy.
-
-        Parameters:
-            df (pandas DataFrame): Input DataFrame.
-            strategy (str, optional): The imputation strategy to use. Defaults to "mean".
-                Can be "mean", "median", "mode", or "constant".
-
-        Returns:
-            pandas DataFrame: DataFrame with imputed null values.
         """
         if strategy not in ["mean", "median", "mode", "constant"]:
             raise ValueError(f"Invalid strategy: {strategy}. Valid options are 'mean', 'median', 'mode', or 'constant'.")
@@ -154,13 +104,6 @@ class PreprocessingUtils:
     def remove_outliers_from_dataframe(self, df, column_names):
         """
         Remove outliers from specified columns of a DataFrame using the interquartile range (IQR) method.
-
-        Parameters:
-            df (pandas DataFrame): Input DataFrame.
-            column_names (list of str): Names of the columns containing the data.
-
-        Returns:
-            pandas DataFrame: DataFrame with outliers removed from the specified columns.
         """
         filtered_df = df.copy()
         for column_name in column_names:
