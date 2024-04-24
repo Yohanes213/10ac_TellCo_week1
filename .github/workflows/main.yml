@@ -16,7 +16,7 @@ jobs:
       - name: Run linting
         run: |
           flake8 .
-          black --line-lenght 120.
+          black --line-length 130 .
           isort .
 
   test:
