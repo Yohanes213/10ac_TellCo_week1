@@ -11,9 +11,9 @@ class VisualizationUtils:
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        stream_handler = logging.StreamHandler()
-        stream_handler.setFormatter(formatter)
-        self.logger.addHandler(stream_handler)
+        file_handler = logging.FileHandler('visualization.log')
+        file_handler.setFormatter(formatter)
+        self.logger.addHandler(file_handler)
 
     def plot_bar(self, data, xlabel, ylabel, title, rotation=45):
         """
@@ -61,7 +61,7 @@ class VisualizationUtils:
         except ValueError:
             self.logger.warning(f"Column '{column}' is not numerical. Histogram cannot be created")
 
-    def plot_boxplot(self, df, column):
+    def plot_boxplot(self, df, column, ax=None):
         """
         Plot a boxplot.
 
@@ -70,14 +70,15 @@ class VisualizationUtils:
             column (str): Name of the column for which boxplot is plotted.
         """
         try:
-            plt.figure(figsize=(10, 6))
+            if ax is None:
+                fig, ax = plt.subplots()
             df[column] = pd.to_numeric(df[column])
-            plt.boxplot(df[column])
-            plt.title(f"Boxplot of {column}")
-            plt.xlabel(column)
-            plt.ylabel("Value")
-            plt.grid(True)
-            plt.show()
+            df[column].plot(kind='box', ax=ax, vert=False, patch_artist=True, notch=True, showmeans=True)
+            #plt.boxplot(df[column], ax=ax)
+            ax.set_title(f"Boxplot of {column}")
+            ax.grid(True)
+            if ax is None:
+                plt.show()
             self.logger.info(f"Boxplot created for '{column}'")
         except ValueError:
             self.logger.warning(f"Column '{column}' is not numerical. Boxplot cannot be created")
