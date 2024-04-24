@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import logging
 
+
 class VisualizationUtils:
     """
     A collection of utility functions for data visualization.
@@ -38,7 +39,7 @@ class VisualizationUtils:
         except Exception as e:
             self.logger.error(f"Error occurred while plotting bar chart: {e}")
 
-    def plot_hist(self, df, column, ax= None):
+    def plot_hist(self, df, column, ax=None):
         """
         Plot a histogram.
 
@@ -68,13 +69,13 @@ class VisualizationUtils:
         Parameters:
             df (pandas DataFrame): DataFrame containing the data.
             column (str): Name of the column for which boxplot is plotted.
+            ax (matplotlib Axes, optional): The Axes object to plot on. If None, create a new figure and axis.
         """
         try:
             if ax is None:
                 fig, ax = plt.subplots()
             df[column] = pd.to_numeric(df[column])
             df[column].plot(kind='box', ax=ax, vert=False, patch_artist=True, notch=True, showmeans=True)
-            #plt.boxplot(df[column], ax=ax)
             ax.set_title(f"Boxplot of {column}")
             ax.grid(True)
             if ax is None:
