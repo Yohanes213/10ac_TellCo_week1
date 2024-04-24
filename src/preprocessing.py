@@ -118,7 +118,6 @@ class PreprocessingUtils:
         self.logger.info(f"Removed outliers from columns: {column_names}")
         return filtered_df
 
-
     def preprocess_date_col(self, df: pd.DataFrame) -> pd.DataFrame:
         """
         Preprocesses the 'Start' and 'End' datetime columns in the DataFrame to create new columns 
@@ -151,18 +150,10 @@ class PreprocessingUtils:
             df['Dur (day)'] = df['Duration'].dt.day
             df['Dur (hour)'] = df['Duration'].dt.hour
             df['Dur (min)'] = df['Duration'].dt.minute
-<<<<<<< HEAD
-            df['Dur (sec)'] = df['Duration'].dt.seconds
-=======
->>>>>>> preprocess
         except AttributeError:
             df['Dur (day)'] = df['Duration'] // pd.Timedelta(days=1)
             df['Dur (hour)'] = (df['Duration'] % pd.Timedelta(days=1)) // pd.Timedelta(hours=1)
             df['Dur (min)'] = (df['Duration'] % pd.Timedelta(hours=1)) // pd.Timedelta(minutes=1)
-<<<<<<< HEAD
-            df['Dur (sec)'] = df['Duration'] % pd.Timedelta(minutes=1)
-=======
->>>>>>> preprocess
 
         # Drop original and potentially unnecessary columns
         dropped_columns = ['Start', 'End', 'Dur. (ms)', 'Duration']
@@ -170,8 +161,7 @@ class PreprocessingUtils:
         self.logger.info(f"Dropped columns after preprocessing date columns: {dropped_columns}")
 
         return df
-<<<<<<< HEAD
-=======
+    
     
     def reduce_dimensionality(self, df: pd.DataFrame, n_components: int = 15) -> pd.DataFrame:
         """
@@ -198,7 +188,7 @@ class PreprocessingUtils:
 
         self.logger.info(f"Reduced dimensionality of the DataFrame using PCA. Retained components: {n_components if n_components is not None else 'All'}")
         return reduced_df if n_components is not None else df
->>>>>>> preprocess
+
 
 
 
