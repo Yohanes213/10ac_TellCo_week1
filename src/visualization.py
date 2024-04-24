@@ -51,7 +51,7 @@ class VisualizationUtils:
             if ax is None:
                 fig, ax = plt.subplots()
             df[column] = pd.to_numeric(df[column])
-            df[column].hist(bins=10, edgecolor='black')
+            df[column].hist(bins=10, edgecolor='black', ax=ax)
             ax.set_title(f"Histogram of {column}")
             ax.set_xlabel(column)
             ax.set_ylabel("Count")
