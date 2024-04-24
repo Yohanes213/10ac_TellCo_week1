@@ -1,117 +1,93 @@
+import matplotlib.pyplot as plt
 import pandas as pd
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import LabelEncoder, MinMaxScaler
 import logging
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(formatter)
-logger.addHandler(stream_handler)
 
-class PreprocessingUtils:
-    """
-    A collection of utility functions for data preprocessing.
+class VisualizationUtils:
+    """A collection of utility functions for data visualization.
+
+    This class configures a logger for visualization-related messages.
     """
 
     def __init__(self):
-        self.logger = logger
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
 
-    def drop_columns_with_null(self, df, threshold=0.3):
-        """
-        Drop columns with a high percentage of missing values.
-        """
-        null_info = df.isnull().sum() / len(df)
-        drop_columns = null_info[null_info > threshold].index
-        self.logger.info(f"Dropped columns with high null values: {drop_columns}")
-        return df.drop(columns=drop_columns)
+        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        file_handler = logging.FileHandler("visualization.log")
+        file_handler.setFormatter(formatter)
 
-    def convert_to_datetime(self, df, columns):
-        """
-        Convert a column to datetime format.
-        """
-        for column in columns:
-            df[column] = pd.to_datetime(df[column])
-            self.logger.info(f"Converted column '{column}' to datetime format")
-        return df
+        self.logger.addHandler(file_handler)
 
-    def convert_to_float_to_int_if_possible(self, df):
+    def plot_bar(self, data: pd.Series, xlabel: str, ylabel: str, title: str, rotation=45) -> None:
         """
-        Convert float columns to int if possible.
-        """
-        for column in df.select_dtypes(include='float'):
-            if df[column].equals(df[column].round()):
-                df[column] = df[column].astype(int)
-                self.logger.info(f"Converted float column '{column}' to int")
-        return df
+        Plot a bar chart.
 
-    def remove_outliers(self, df, column, num_std=3):
+        Parameters:
+            data (pandas.Series): Data to plot.
+            xlabel (str): Label for the x-axis.
+            ylabel (str): Label for the y-axis.
+            title (str): Title of the plot.
+            rotation (int, optional): Rotation angle for x-axis labels. Defaults to 45.
         """
-        Remove outliers from a column based on the specified number of standard deviations from the mean.
-        """
-        mean = df[column].mean()
-        std = df[column].std()
-        lower_bound = mean - num_std * std
-        upper_bound = mean + num_std * std
-        filtered_df = df[df[column].between(lower_bound, upper_bound)]
-        outliers_count = len(df) - len(filtered_df)
-        self.logger.info(f"Removed {outliers_count} outliers from column '{column}'")
-        return filtered_df
 
-    def encode_categorical_data(self, df, categorical_columns=None):
-        """
-        Encode categorical columns using LabelEncoder.
-        """
-        if categorical_columns is None:
-            categorical_columns = df.select_dtypes(include=['object']).columns.tolist()
-        encoder = LabelEncoder()
-        encoded_df = df.copy()
-        for col in categorical_columns:
-            encoded_df[col] = encoder.fit_transform(df[col])
-        self.logger.info(f"Encoded categorical columns: {categorical_columns}")
-        return encoded_df
+        try:
+            plt.figure(figsize=(10, 6))
+            plt.bar(data.index, data.values, color="skyblue")
+            plt.xlabel(xlabel)
+            plt.ylabel(ylabel)
+            plt.title(title)
+            plt.xticks(rotation=rotation, ha="right")
+            plt.show()
+            self.logger.info(f"Bar plot created for '{title}'")
+        except Exception as e:
+            self.logger.error(f"Error occurred while plotting bar chart: {e}")
 
-    def scale_data(self, df):
+    def plot_hist(self, df: pd.DataFrame, column: str, ax=None) -> None:
         """
-        Scale the entire DataFrame using Min-Max scaling.
-        """
-        scaler = MinMaxScaler()
-        scaled_data = scaler.fit_transform(df)
-        scaled_df = pd.DataFrame(scaled_data, columns=df.columns)
-        self.logger.info("Scaled the data using Min-Max scaling")
-        return scaled_df
+        Plot a histogram.
 
-    def impute_nulls(self, df, strategy="mean"):
+        Parameters:
+            df (pandas.DataFrame): DataFrame containing the data.
+            column (str): Name of the column for which histogram is plotted.
+            ax (matplotlib.Axes, optional): The Axes object to plot on. If None, create a new figure and axis.
         """
-        Imputes null values in all columns of the DataFrame using a specified strategy.
+
+        try:
+            if ax is None:
+                fig, ax = plt.subplots()
+            # Handle non-numeric values (optional)
+            df[column] = pd.to_numeric(df[column], errors="coerce")
+            df[column].hist(bins=10, edgecolor="black", ax=ax)
+            ax.set_title(f"Histogram of {column}")
+            ax.set_xlabel(column)
+            ax.set_ylabel("Count")
+            if ax is None:
+                plt.show()
+            self.logger.info(f"Histogram plot created for '{column}'")
+        except ValueError:
+            self.logger.warning(f"Column '{column}' is not numerical. Histogram cannot be created")
+
+    def plot_boxplot(self, df: pd.DataFrame, column: str, ax=None) -> None:
         """
-        if strategy not in ["mean", "median", "mode", "constant"]:
-            raise ValueError(f"Invalid strategy: {strategy}. Valid options are 'mean', 'median', 'mode', or 'constant'.")
+        Plot a boxplot.
 
-        if df.dtypes.eq('object').any():
-            categorical_cols = df.select_dtypes(include='object').columns
-            imputer = SimpleImputer(strategy='most_frequent')
-            df[categorical_cols] = imputer.fit_transform(df[categorical_cols])
-
-        numerical_cols = df.select_dtypes(include='number').columns
-        imputer = SimpleImputer(strategy=strategy)
-        df[numerical_cols] = imputer.fit_transform(df[numerical_cols])
-
-        self.logger.info(f"Imputed null values using strategy: {strategy}")
-        return df
-
-    def remove_outliers_from_dataframe(self, df, column_names):
+        Parameters:
+            df (pandas.DataFrame): DataFrame containing the data.
+            column (str): Name of the column for which boxplot is plotted.
+            ax (matplotlib.Axes, optional): The Axes object to plot on. If None, create a new figure and axis.
         """
-        Remove outliers from specified columns of a DataFrame using the interquartile range (IQR) method.
-        """
-        filtered_df = df.copy()
-        for column_name in column_names:
-            Q1 = df[column_name].quantile(0.25)
-            Q3 = df[column_name].quantile(0.75)
-            IQR = Q3 - Q1
-            lower_bound = Q1 - 1.5 * IQR
-            upper_bound = Q3 + 1.5 * IQR
-            filtered_df = filtered_df[(filtered_df[column_name] >= lower_bound) & (filtered_df[column_name] <= upper_bound)]
-        self.logger.info(f"Removed outliers from columns: {column_names}")
-        return filtered_df
+
+        try:
+            if ax is None:
+                fig, ax = plt.subplots()
+            # Handle non-numeric values (optional)
+            df[column] = pd.to_numeric(df[column], errors="coerce")
+            df[column].plot(kind="box", ax=ax, vert=False, patch_artist=True, notch=True, showmeans=True)
+            ax.set_title(f"Boxplot of {column}")
+            ax.grid(True)
+            if ax is None:
+                plt.show()
+            self.logger.info(f"Boxplot created for '{column}'")
+        except ValueError:
+            self.logger.warning(f"Column '{column}' is not numerical. Boxplot cannot be created")
