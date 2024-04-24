@@ -19,7 +19,7 @@ class VisualizationUtils:
 
         self.logger.addHandler(file_handler)
 
-    def plot_bar(self, data: pd.Series, xlabel: str, ylabel: str, title: str, rotation=45) -> None:
+    def plot_bar(self, data, xlabel: str, ylabel: str, title: str, rotation=45) -> None:
         """
         Plot a bar chart.
 
@@ -33,7 +33,7 @@ class VisualizationUtils:
 
         try:
             plt.figure(figsize=(10, 6))
-            plt.bar(data.index, data.values, color="skyblue")
+            data.plot(kind='bar')
             plt.xlabel(xlabel)
             plt.ylabel(ylabel)
             plt.title(title)
