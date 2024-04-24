@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import logging
+import seaborn as sns
 
 
 class VisualizationUtils:
@@ -91,3 +92,28 @@ class VisualizationUtils:
             self.logger.info(f"Boxplot created for '{column}'")
         except ValueError:
             self.logger.warning(f"Column '{column}' is not numerical. Boxplot cannot be created")
+
+        
+    def plot_heatmap_correlation(self, df: pd.DataFrame, title: str = None, cmap="coolwarm") -> None:
+        """
+        Plot a heatmap representing the correlation matrix of the DataFrame.
+
+        Parameters:
+            df (pandas.DataFrame): DataFrame containing the data for calculating correlations.
+            title (str, optional): Title for the heatmap. Defaults to None.
+            cmap (str, optional): Colormap to use for visualization. Defaults to "coolwarm".
+        """
+
+        try:
+            correlation_matrix = df.corr()  # Calculate correlation matrix
+            fig, ax = plt.subplots(figsize=(12, 8))
+            sns.heatmap(correlation_matrix, annot=True, ax=ax, cmap=cmap)  # Use seaborn for heatmap
+
+            if title:
+                plt.title(title)
+            plt.xlabel("Features")
+            plt.ylabel("Features")
+            plt.show()
+            self.logger.info(f"Correlation heatmap generated for '{title if title else 'data'}'")
+        except Exception as e:
+            self.logger.error(f"Error occurred while plotting correlation heatmap: {e}")

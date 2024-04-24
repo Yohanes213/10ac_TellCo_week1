@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler
 import logging
+from sklearn.decomposition import PCA
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -150,12 +151,18 @@ class PreprocessingUtils:
             df['Dur (day)'] = df['Duration'].dt.day
             df['Dur (hour)'] = df['Duration'].dt.hour
             df['Dur (min)'] = df['Duration'].dt.minute
+<<<<<<< HEAD
             df['Dur (sec)'] = df['Duration'].dt.seconds
+=======
+>>>>>>> preprocess
         except AttributeError:
             df['Dur (day)'] = df['Duration'] // pd.Timedelta(days=1)
             df['Dur (hour)'] = (df['Duration'] % pd.Timedelta(days=1)) // pd.Timedelta(hours=1)
             df['Dur (min)'] = (df['Duration'] % pd.Timedelta(hours=1)) // pd.Timedelta(minutes=1)
+<<<<<<< HEAD
             df['Dur (sec)'] = df['Duration'] % pd.Timedelta(minutes=1)
+=======
+>>>>>>> preprocess
 
         # Drop original and potentially unnecessary columns
         dropped_columns = ['Start', 'End', 'Dur. (ms)', 'Duration']
@@ -163,6 +170,35 @@ class PreprocessingUtils:
         self.logger.info(f"Dropped columns after preprocessing date columns: {dropped_columns}")
 
         return df
+<<<<<<< HEAD
+=======
+    
+    def reduce_dimensionality(self, df: pd.DataFrame, n_components: int = 15) -> pd.DataFrame:
+        """
+        Reduces the dimensionality of the DataFrame using Principal Component Analysis (PCA).
+
+        Args:
+            df (pd.DataFrame): The DataFrame to reduce dimensionality.
+            n_components (int, optional): The number of principal components to retain. 
+                If None, all components are kept. Defaults to None.
+
+        Returns:
+            pd.DataFrame: The DataFrame with reduced dimensionality.
+        """
+
+        pca = PCA(n_components=n_components)
+        pca_components = pca.fit_transform(df)
+
+        # Optional: Create a new DataFrame with principal components
+        if n_components is not None:
+            reduced_df = pd.DataFrame(pca_components, columns=[f"PC{i+1}" for i in range(n_components)])
+        else:
+            # Replace the original DataFrame with transformed data (all components)
+            df = pd.DataFrame(pca_components, columns=df.columns)
+
+        self.logger.info(f"Reduced dimensionality of the DataFrame using PCA. Retained components: {n_components if n_components is not None else 'All'}")
+        return reduced_df if n_components is not None else df
+>>>>>>> preprocess
 
 
 
