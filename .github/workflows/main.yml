@@ -16,7 +16,7 @@ jobs:
       - name: Run linting
         run: |
           git config core.autocrlf false
-          black --line-length 130 .  
+          black .  
           flake8 .
           isort .
 
