@@ -6,5 +6,5 @@ config_database.json
 src/__pycache__/*
 
 notebook/database_connection.log
-notebook/database_opertaions.log
+notebook/database_operations.log
 notebook/visualization.log
