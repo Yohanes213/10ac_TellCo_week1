@@ -9,3 +9,4 @@ notebook/database_connection.log
 notebook/database_operations.log
 notebook/visualization.log
 notebook/preprocessing.log
+notebook/utils.log
