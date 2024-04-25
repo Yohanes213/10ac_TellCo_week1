@@ -14,18 +14,18 @@ class Utils:
     def __init__(self):
         self.logger = logger
 
-    def calculate_score(self, metrics, less_cluster):
+    def calculate_score(self, metrics: pd.DataFrame, less_cluster: int) -> list:
         """
         Calculate the score for each user based on their metrics and cluster labels.
 
         Parameters:
         - metrics: DataFrame, contains user metrics (rows) and corresponding columns
-        - less_cluster: least cluster
+        - less_cluster: int, least engaged cluster label
 
         Returns:
-        - scores: array, engagement or experience scores for each user
+        - scores: list, engagement or experience scores for each user
         """
-        try:  
+        try:
             # Get the data points of users belonging to the least engaged cluster
             less_engaged_data_points = metrics[metrics['cluster'] == less_cluster]
 
