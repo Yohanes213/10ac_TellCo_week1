@@ -3,6 +3,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler
 import logging
 from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -89,8 +90,10 @@ class PreprocessingUtils:
 
         # Impute categorical columns with 'most_frequent' strategy
         if len(categorical_cols) > 0:
-            imputer = SimpleImputer(strategy='most_frequent')
-            df[categorical_cols] = imputer.fit_transform(df[categorical_cols])
+            #imputer = SimpleImputer(strategy='most_frequent')
+            for col in categorical_cols:
+                mode_value = df[col].mode().iloc[0]
+                df[col].fillna(mode_value, inplace=True)
 
         # Impute numerical columns with provided strategy
         if len(numerical_cols) > 0:
@@ -188,6 +191,26 @@ class PreprocessingUtils:
 
         self.logger.info(f"Reduced dimensionality of the DataFrame using PCA. Retained components: {n_components if n_components is not None else 'All'}")
         return reduced_df if n_components is not None else df
+    
+    def kmeans_clustering(self, df: pd.DataFrame, n_clusters: int = 3, random_state: int = 42) -> KMeans:
+        """
+        Performs KMeans clustering on the DataFrame.
+
+        Args:
+            df (pd.DataFrame): The DataFrame to perform clustering on.
+            n_clusters (int, optional): The number of clusters to form. Defaults to 3.
+            random_state (int, optional): Determines random number generation for centroid initialization. Defaults to 42.
+
+        Returns:
+            KMeans: The trained KMeans clustering model.
+        """
+
+        kmeans = KMeans(n_clusters=n_clusters, random_state=random_state)
+        cluster= kmeans.fit(df)
+
+        self.logger.info(f"Performed KMeans clustering with {n_clusters} clusters")
+        return cluster
+
 
 
 
