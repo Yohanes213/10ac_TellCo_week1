@@ -50,6 +50,7 @@ The project is structured as follows:
   - database_connection.py
   - perform_database_operations.py
   - preprocessing.py
+  - utils.py
   - visualization.py
 - .gitignore
 - README.md
