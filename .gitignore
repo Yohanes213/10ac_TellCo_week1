@@ -1,12 +1,17 @@
-week1_env
-data
+# Ignore Week 1 environment files
+week1_env/
 
+# Ignore data directory
+data/
+
+# Ignore specific configuration file
 config_database.json
 
-src/__pycache__/*
+# Ignore Python bytecode files
+src/__pycache__/
 
-notebook/database_connection.log
-notebook/database_operations.log
-notebook/visualization.log
-notebook/preprocessing.log
-notebook/utils.log
+# Ignore log files in notebook directory
+notebook/*.log
+
+# Ignore log files in root directory
+*.log
