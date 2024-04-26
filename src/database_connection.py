@@ -32,7 +32,7 @@ def connect_to_database(connection_params):
     except Exception as e:
         logger.exception("Failed to connect to the database: %s", e)
 
-def execute_sql_query(engine, sql_query):
+def read_table_to_database(engine, sql_query):
     """
     Execute a SQL query on the provided database engine.
 
@@ -49,3 +49,29 @@ def execute_sql_query(engine, sql_query):
         return df
     except Exception as e:
         logger.exception("Failed to execute SQL query: %s", e)
+
+
+def write_dataframe_to_database_table(df, engine, table_name):
+    """
+    Writes a pandas DataFrame to a database table.
+
+    This function efficiently stores the data in the DataFrame to a specified table within the database
+    managed by the provided engine.
+
+    Parameters:
+        df (pandas.DataFrame): The pandas DataFrame containing the data to be written.
+        engine (sqlalchemy.engine.Engine): A SQLAlchemy engine object representing the connection to the database.
+        table_name (str): The name of the table in the database where the data will be stored.
+
+    Returns:
+        None
+    """
+
+    try:
+        df.to_sql(table_name, engine, index=False, if_exists='replace')
+        logger.info("Data from DataFrame successfully written to table: %s", table_name)
+    except Exception as e:
+        logger.exception("Failed to write DataFrame to table: %s", e)
+
+    
+
