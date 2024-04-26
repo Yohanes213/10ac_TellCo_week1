@@ -65,10 +65,14 @@ The project is structured as follows:
 The project is divided into multiple tasks:
 
 **Task 1: Report on Streamlit Understanding**
+
 **Task 2: User Overview Analysisg**
+
 **Task 3: User Engagement Analysis**
+
 **Task 4: Experience Analytics**
-**Task 5: Satisfaction Analysis**: 
+
+**Task 5: Satisfaction Analysis**
 
 ## Task 1: Report on Streamlit Understanding
 
