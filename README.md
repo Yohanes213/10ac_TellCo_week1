@@ -46,7 +46,7 @@ The project is structured as follows:
     - main.yml
 - notebooks
   - tellco.ipynb
--screenshots
+- screenshots
    - database
 - src
   - database_connection.py
